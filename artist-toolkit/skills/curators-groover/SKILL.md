@@ -1,6 +1,6 @@
 ---
 name: curators-groover
-description: "Méthode pour gérer les campagnes Groover d'un artiste. Quatre fonctions — (1) pitch général d'un nouveau single, (2) pitchs personnalisés en batch : sélection via la colonne de reco du registre, puis choix automatique entre 3 messages selon l'historique (premier envoi / relance après acceptation / relance après refus chaud), (3) scorer à la main un curateur (bio + genres collés), (4) scorer en batch depuis un export JSON Groover et bâtir le plan de campagne / répartir le budget Grooviz par EV. Déclencheurs : «campagne Groover», «pitch général», «génère les pitchs», «score ce curateur», «j'ai trouvé un curateur», «score mes curateurs Groover», «plan de campagne Groover», «répartis mon budget Grooviz». Suppose qu'un registre curateurs et des templates de pitchs vivent dans le projet actif (le registre du projet (Notion, fichier joint ou autre base)) et que l'identité artistique vit dans le projet. Aucune donnée d'artiste : méthode pure, réutilisable d'un projet à l'autre."
+description: "Méthode pour gérer les campagnes Groover d'un artiste. Quatre fonctions — (1) pitch général d'un nouveau single, (2) pitchs personnalisés en batch : sélection via la colonne de reco du registre, puis choix automatique entre 3 messages selon l'historique (premier envoi / relance après acceptation / relance après refus chaud), (3) scorer à la main un curateur (bio + genres collés), (4) scorer en batch depuis un export JSON Groover et bâtir le plan de campagne / répartir le budget Grooviz par EV. Déclencheurs : «campagne Groover», «pitch général», «génère les pitchs», «score ce curateur», «j'ai trouvé un curateur», «score mes curateurs Groover», «plan de campagne Groover», «répartis mon budget Grooviz». Suppose qu'un registre curateurs et des templates de pitchs vivent dans le projet actif (Notion, fichier joint ou autre base) et que l'identité artistique vit dans le projet. Aucune donnée d'artiste : méthode pure, réutilisable d'un projet à l'autre."
 ---
 
 # Curators Groover — Méthode
@@ -11,7 +11,7 @@ Cette skill couvre **quatre tâches précises** liées à une campagne Groover, 
 
 - L'**identité artistique** du projet où elle est invoquée (instructions du projet).
 - Les **templates de pitchs** : les *pitchs généraux de référence* (Fonction 1) et le *kit de pitch personnalisé* — 3 cas × tutoiement/vouvoiement (Fonction 2). Ils vivent dans le registre du projet (Notion, fichier joint ou autre base) ou, à défaut, dans les instructions du projet.
-- Le **registre curateurs** du projet (le registre du projet (Notion, fichier joint ou autre base)). Colonnes attendues :
+- Le **registre curateurs** du projet (Notion, fichier joint ou autre base). Colonnes attendues :
   - **Curateur** — titre.
   - **Type** — champ multi-valeurs (ex. Playlist / Radio / Media). *N'intervient pas dans le choix du message.*
   - **Genres** — champ multi-valeurs, ~2 tags par curateur.
@@ -67,7 +67,7 @@ Pour chaque curateur retenu, lire ses colonnes de statut par single passé + la 
 
 ### Remplissage du template
 
-Lire les 6 gabarits dans les instructions du projet (ou, à défaut, dans les instructions du projet), puis :
+Lire les 6 gabarits du *kit de pitch personnalisé* à l'emplacement désigné dans les instructions du projet, puis :
 
 - **Tu / Vous** : si la colonne `Tutoiement` vaut `✅`, prendre la version **tu** ; sinon la version **vous**.
 - **[Nom curateur]** : colonne `Curateur`.
@@ -91,7 +91,7 @@ Une liste de blocs, un par curateur retenu :
 - **« À vérifier — Note ambiguë »**
 - **« Exclus — refus froid (repêchage manuel possible) »**
 
-**Si le registre n'est pas lisible** (le registre du projet (Notion, fichier joint ou autre base) dans la session) : demander à l'utilisateur de coller la sélection des curateurs avec, pour chacun, les colonnes `Curateur`, `Genres`, `Tutoiement`, le statut par single passé et la `Note`.
+**Si le registre n'est pas lisible** (source du registre non connectée dans la session) : demander à l'utilisateur de coller la sélection des curateurs avec, pour chacun, les colonnes `Curateur`, `Genres`, `Tutoiement`, le statut par single passé et la `Note`.
 
 ---
 
@@ -144,8 +144,8 @@ qualitative /4 reste le **fallback** quand ces chiffres ne sont pas disponibles.
 `statsv3`) pour une campagne, ou demande « score mes curateurs Groover », « fais-moi le plan de
 campagne Groover », « répartis mon budget Grooviz ».
 
-**Ressources projet (lues dans le projet, jamais inventées)** — vivent dans Notion / les
-instructions du projet, **pas dans la skill** :
+**Ressources projet (lues dans le projet, jamais inventées)** — vivent dans le registre / les
+instructions du projet (Notion ou autre), **pas dans la skill** :
 - Les **IDs des genres cibles** et des **pays** (table de correspondance ID → nom).
 - Le **budget** en Grooviz.
 - Le **lien du runbook d'extraction** (procédure F12 / Console + script), indiqué dans les
