@@ -13,7 +13,7 @@ storytelling. Elle s'appuie sur :
 
 - L'**identité artistique** du projet où elle est invoquée — voix, positionnement, marqueurs
   d'identité, et le concept de la **sortie en cours** (instructions du projet).
-- Le **tracker de contenu** du projet (Notion ou fichier joint) : angles déjà publiés, formats
+- Le **tracker de contenu** du projet (Notion, fichier joint ou autre base) : angles déjà publiés, formats
   et accroches qui ont performé.
 
 Elle **conseille, elle ne produit pas**. Elle ne rédige pas les posts finaux, les pitchs ni les
@@ -148,9 +148,10 @@ et veut le contenu rédigé, passer la main à la skill de production.
 ## Mémoire de ce qui marche
 
 Avant les Fonctions 1 et 3, lire le tracker de contenu désigné dans les instructions du projet
-(une base Notion, si elle est liée) : angles déjà publiés, accroches et formats qui ont performé.
-Réutiliser ce qui marche, éviter de répéter ce qui a déjà été fait. Si aucun tracker n'est
-désigné, demander lequel utiliser. La skill **ne modifie jamais** le tracker : lecture seule.
+(une base Notion ou autre source désignée, si elle est liée) : angles déjà publiés, accroches et
+formats qui ont performé. Réutiliser ce qui marche, éviter de répéter ce qui a déjà été fait. Si
+aucun tracker n'est désigné, demander lequel utiliser. La skill **ne modifie jamais** le tracker :
+lecture seule.
 
 ## Frontières avec les autres skills
 
