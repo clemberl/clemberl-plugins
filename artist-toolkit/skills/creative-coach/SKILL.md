@@ -148,9 +148,10 @@ et veut le contenu rédigé, passer la main à la skill de production.
 ## Mémoire de ce qui marche
 
 Avant les Fonctions 1 et 3, lire le tracker de contenu désigné dans les instructions du projet
-(une base Notion, si elle est liée) : angles déjà publiés, accroches et formats qui ont performé.
-Réutiliser ce qui marche, éviter de répéter ce qui a déjà été fait. Si aucun tracker n'est
-désigné, demander lequel utiliser. La skill **ne modifie jamais** le tracker : lecture seule.
+(une base Notion ou autre source désignée, si elle est liée) : angles déjà publiés, accroches et
+formats qui ont performé. Réutiliser ce qui marche, éviter de répéter ce qui a déjà été fait. Si
+aucun tracker n'est désigné, demander lequel utiliser. La skill **ne modifie jamais** le tracker :
+lecture seule.
 
 ## Frontières avec les autres skills
 
