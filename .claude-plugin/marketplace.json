@@ -7,8 +7,7 @@
     {
       "name": "artist-toolkit",
       "source": "./artist-toolkit",
-      "description": "Boîte à outils transversale pour artistes musicaux indépendants : pitchs streaming, contenu social, coaching créatif, campagnes Groover, identité visuelle.",
-      "version": "0.1.0"
+      "description": "Boîte à outils transversale pour artistes musicaux indépendants : pitchs streaming, contenu social, coaching créatif, campagnes Groover, identité visuelle."
     }
   ]
 }
