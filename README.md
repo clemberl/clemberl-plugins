@@ -1,68 +1,100 @@
 # Artist Toolkit
 
-Une boîte à outils de *skills* pour artistes musicaux indépendants : campagnes de curateurs, contenu social, pitchs streaming, coaching créatif, identité visuelle.
+Boîte à skills pour artistes musicaux indépendants, distribuée comme **plugin Claude Code** via la marketplace `clemberl-plugins`.
 
-Le plugin porte la **méthode** (le *comment*). Il ne contient **aucune donnée d'artiste** : la voix, le positionnement, l'univers et le contexte de la sortie en cours sont lus dans le **projet actif** où la skill est invoquée. Chaque skill est ainsi réutilisable d'un projet musical à l'autre.
+Les skills couvrent la chaîne de promotion d'une sortie : pitchs streaming, contenu social, coaching créatif, identité visuelle et campagnes de curation Groover.
 
-## Skills incluses
+---
+
+## Installation
+
+Depuis Claude Code :
+
+```
+/plugin marketplace add https://github.com/clemberl/clemberl-toolkit
+/plugin install artist-toolkit@clemberl-plugins
+```
+
+Mise à jour ultérieure :
+
+```
+/plugin marketplace update clemberl-plugins
+```
+
+---
+
+## Skills inclus
 
 | Skill | Rôle |
-|---|---|
-| `curators-groover` | Campagnes Groover : pitch général, pitchs personnalisés en batch, scoring d'un curateur, scoring en batch + plan de campagne / budget. |
-| `social-content` | Posts Instagram/TikTok : hooks, légendes, CTA, adaptés au format et à l'objectif. |
-| `streaming-pitch` | Pitchs éditoriaux Spotify / Apple Music / Amazon Music, ancrés dans les paroles et la place du morceau dans l'album. |
-| `creative-coach` | Critique d'une proposition, test de cohérence avec l'univers, angles de storytelling. |
-| `visual-brief` | Codification et maintien de l'identité visuelle d'un artiste. |
+|-------|------|
+| `streaming-pitch` | Pitchs structurés pour Spotify / Apple Music / Amazon Music for Artists, ancrés dans les paroles et la place du titre dans l'album. |
+| `social-content` | Batches de hooks, captions et CTA pour Instagram et TikTok, adaptés au format et à l'objectif. |
+| `creative-coach` | Critique de propositions artistiques, test de cohérence avec l'univers, angles de storytelling. Conseille, ne produit pas les livrables finaux. |
+| `visual-brief` | Codifie et maintient l'identité visuelle (charte, Brand Kit, briefs visuels ciblés). |
+| `curators-groover` | Gestion des campagnes Groover : pitchs généraux et personnalisés, scoring de curateurs, plan de campagne et répartition du budget Grooviz. |
 
-## Principe : méthode, pas infrastructure
+Chaque skill est un fichier `SKILL.md` avec frontmatter YAML. Les skills sont **réutilisables d'un projet musical à l'autre** : ils ne contiennent aucune donnée d'artiste, qui vit dans le projet Claude actif.
 
-Les skills ne codent en dur **ni un artiste, ni un outil**. Elles lisent les données dont elles ont besoin (registres, trackers, templates) depuis une source que **tu désignes dans les instructions de ton projet**.
+---
 
-**Notion est l'implémentation de référence**, mais ce n'est pas une dépendance : n'importe quelle source tabulaire convient (Airtable, Coda, Google Sheets, un fichier joint), du moment qu'elle respecte la **forme attendue** décrite ci-dessous. Si aucune source n'est connectée dans la session, la skill demande de coller les données utiles.
+## Connecteurs
 
-## Setup de référence
+Le plugin est **connector-neutral** : aucun skill n'impose de connecteur en pré-requis gravé. Quand un skill s'appuie sur une source externe, elle est citée comme **exemple nommé** dans la doc, jamais comme dépendance dure.
 
-Cette section décrit **la forme** des données à mettre en place. Le **contenu** (textes des templates, table d'IDs, budget…) t'appartient et vit dans les instructions de ton projet, pas dans le plugin.
+Le fichier `.mcp.json` à la racine du plugin **propose** les connecteurs dans l'onglet « Connecteurs » sans les imposer :
 
-### 1. Registre curateurs — pour `curators-groover`
+```json
+{
+  "mcpServers": {
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp"
+    }
+  }
+}
+```
 
-Une table (base Notion, Airtable, ou feuille) avec ces colonnes :
+- Le serveur Notion hébergé est en HTTP streamable (`type: "http"`) et gère l'OAuth côté serveur : **aucune clé ni token à inscrire**. L'utilisateur s'authentifie au moment où il connecte le serveur depuis l'onglet Connecteurs.
+- La clé `"notion"` est le **nom interne** du serveur, référencé par la doc des skills — la garder stable.
+- Pour ajouter d'autres connecteurs (Drive, Gmail…), ajouter des entrées sœurs dans `mcpServers`. Un seul `.mcp.json` pour tout le plugin.
 
-- **Curateur** — titre / nom.
-- **Type** — champ multi-valeurs (ex. Playlist / Radio / Media).
-- **Genres** — champ multi-valeurs, ~2 tags par curateur.
-- **Une colonne de statut par single passé**, nommée d'après le single (ex. `Single A (24)`). Valeurs : `✅ Accepté` / `❌ Refusé` / `⬜ Silence` / `– Non contacté` / `Veut en savoir plus`.
-- **Reco prochain single** — texte. Valeurs : `🟢 Renvoyer` / `🟡 Test` / `🟡 Retenter` / `🔴 Stop` / `🟠 Ne pas prioriser` / `⚠️ Exception 🔥`. (Une campagne « parenthèse » peut avoir sa propre colonne de reco.)
-- **Tutoiement** — texte ; `✅` = répondre en tu.
-- **Note** — texte ; c'est ici que se lit la **chaleur d'un refus** (encouragement à revenir, etc.).
+---
 
-La skill **lit** ce registre ; elle ne l'écrit jamais. Désigne son emplacement dans les instructions du projet.
+## Notion & `curators-groover`
 
-### 2. Kit de pitch — pour `curators-groover` (Fonctions 1 & 2)
+Le skill `curators-groover` suppose qu'un **registre de curateurs** et des **templates de pitchs** vivent dans le projet actif (base Notion, fichier joint ou autre). Notion n'est qu'un exemple de support : le skill fonctionne avec n'importe quelle base équivalente.
 
-Un emplacement qui contient :
+Pour l'utiliser avec Notion : connecter le serveur `notion` depuis l'onglet Connecteurs, puis pointer le skill vers la base concernée.
 
-- **Pitchs généraux de référence** : les pitchs généraux des singles précédents, qui servent de calibrage de ton.
-- **Kit de pitch personnalisé** : **6 gabarits** = 3 cas (premier envoi / relance après acceptation / relance après refus chaud) × tutoiement / vouvoiement.
+---
 
-> Dans le setup Notion d'origine, ceci vivait dans la page **« Curateurs Groover › 🧰 Kit de pitch personnalisé »**. Reproduis-le où tu veux et indique l'emplacement dans les instructions du projet.
+## Structure du repo
 
-### 3. Ressources de campagne — pour `curators-groover` (Fonction 4)
+```
+.
+├── marketplace.json            # référence le plugin via "source": "./artist-toolkit"
+└── artist-toolkit/
+    ├── .claude-plugin/
+    │   └── plugin.json         # nom + version (semver)
+    ├── .mcp.json               # connecteurs proposés (Notion, …)
+    ├── README.md
+    └── skills/
+        ├── streaming-pitch/SKILL.md
+        ├── social-content/SKILL.md
+        ├── creative-coach/SKILL.md
+        ├── visual-brief/SKILL.md
+        └── curators-groover/SKILL.md
+```
 
-Vivent dans les instructions du projet (jamais dans le plugin) :
-
-- La table de correspondance **IDs de genres / pays → noms**.
-- Le **budget** en Grooviz.
-- Le **lien du runbook d'extraction** (procédure d'export JSON).
-
-### 4. Tracker de contenu — pour `social-content` et `creative-coach`
-
-Un registre des posts passés : angles déjà publiés, hooks/légendes/CTA qui ont performé, avec les signaux de performance (rétention, saves/partages, engagement rapporté au reach). Lecture seule pour les skills.
-
-## Connecteurs (optionnel)
-
-Si tu utilises Notion, tu peux connecter le **connecteur Notion** pour que les skills lisent ton registre directement. C'est **proposé, pas imposé** : sans connecteur, colle les lignes pertinentes quand la skill le demande. Tout autre outil reste valable tant que la forme ci-dessus est respectée.
+---
 
 ## Versioning
 
-Le plugin suit le **semver** (`MAJEUR.MINEUR.PATCH`), actuellement en pré-1.0 (`0.x.y`) : corrections → patch, nouvelle capacité → mineur, changement cassant → majeur.
+Le plugin suit **semver en pré-1.0** (`0.x.y`). L'ajout du connecteur Notion via `.mcp.json` est une nouvelle fonctionnalité → **bump mineur** : `0.1.1` → `0.2.0`.
+
+Tenir à jour le champ `version` dans `artist-toolkit/.claude-plugin/plugin.json` à chaque release.
+
+### Changelog
+
+- **0.2.0** — Ajout du `.mcp.json` proposant le connecteur Notion (onglet Connecteurs). Découplage connector-neutral des skills : Notion passe d'un pré-requis gravé à un exemple nommé dans la doc.
+- **0.1.1** — Version précédente.
